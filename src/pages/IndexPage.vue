@@ -1,4 +1,6 @@
 <template>
+  <router-link :to="{ path: 'hello' }">Hello page</router-link>
+  <router-link :to="{ path: 'Exercice1Page' }">Exercice1 page</router-link>
   <q-page class="flex flex-center">
     <img
       alt="Quasar logo"

@@ -1,4 +1,5 @@
 <template>
+  <router-link :to="{ path: '/' }">Home page</router-link>
   <q-page class="flex flex-center">
     <h1>Hello World !</h1>
   </q-page>
