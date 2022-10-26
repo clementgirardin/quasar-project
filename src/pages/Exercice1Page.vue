@@ -1,46 +1,25 @@
 <template>
   <router-link :to="{ path: '/' }">Home page</router-link>
   <!--
-   Exercice 1
-   1) Créer les données (data) name et age
-   2) Reliez ces données aux deux champs de saisie <input /> correspondants
-   3) Afficher le nom et l'âge dans le cadre beige <div class="description"> (première ligne en gras)
-   4) Utilisez une propriété calculée pour afficher l'âge plus 10 ans (deuxième ligne en gras)
-   5) Afficher le nombre de caractères du nom (troisième ligne en gras)
-   6) Afficher le nom en majuscules (quatrième ligne en gras)
-   7) N'affichez le cadre beige que si un nom et un âge valide ont été saisis.
-      Sinon, affichez le cadre rouge <div class="no-details">
-
-   8) Utilisez v-show pour afficher les messages d'erreur à côté des champs
-      si le nom comporte plus de 15 caractères et l'âge dépasse 100 ans
-      ou est plus petit que 1.
-
-   9) Ajouter la classe CSS "error" aux champs de saisie s'ils enfreignent les mêmes règles
-
-   10) Lorsque vous cliquez sur le bouton "Générer une personne",
-       vous générez un nom aléatoire (à partir d'un tableau que vous créerez) et
-       un âge aléatoire compris entre 1 et 100 ans.
-       Ces nouvelles valeurs doivent être mise à jour partout dans la vue.
 
    11) Créer une directive qui donnera le focus au champ nom lors du chargement de la page
 
-   12) Faites en sorte qu'une personne aléatoire soit générée lors du premier chargement de la page
    -->
   <q-page padding>
     <div class="form q-mb-lg">
       <div class="row q-mb-md">
         <label>Nom:</label>
-        <input v-model="nom" type="text">
-        <label class="error">Maximum 15 caractères
+        <input v-model="nom"  v-autofocus :class="{error : (nom.length > 15 || nom.length < 1)}" type="text">
+        <label v-show="nom.length > 15 || nom.length < 1" class="error" >Maximum 15 caractères
         </label>
       </div>
       <div class="row q-mb-md">
         <label>Age:</label>
-        <input v-model="age" type="number">
-        <label class="error">Veuillez entrer un âge compris entre 1 et 100</label>
+        <input v-model="age" :class="{error : (age > 100 || age < 1)}" type="number">
+        <label v-show="age < 1 || age > 100" class="error">Veuillez entrer un âge compris entre 1 et 100</label>
       </div>
       <div class="row">
-        <button>Générer une personne</button>
+        <button @click="randomPerson">Générer une personne</button>
       </div>
     </div>
 
@@ -60,24 +39,46 @@
 <script>
 import { defineComponent } from 'vue'
 
+const randomNames = [
+  'Jean',
+  'Ethan',
+  'Vincent',
+  'Louis',
+  'Nathan',
+  'Greg',
+  'Julien',
+  'Kevin',
+  'Loris',
+  'Simon'
+]
 export default defineComponent({
+  name: 'Exercie1Page',
   data: function () {
     return {
-      name: 'Exercie1Page',
       nom: '',
-      age: 0
+      age: 0,
+      classError: ''
     }
-  }
+  },
 
-  // computed: {
-  //   // eslint-disable-next-line vue/return-in-computed-property
-  //   nomAgeValide: function () {
-  //     // eslint-disable-next-line no-undef
-  //     if (nom.length > 0 && age > 0) {
-  //
-  //     }
-  //   }
-  // }
+  methods: {
+    randomPerson () {
+      this.nom = randomNames[Math.floor(Math.random() * randomNames.length)]
+      this.age = Math.floor(Math.random() * 100)
+    }
+  },
+
+  directives: {
+    autofocus: {
+      inserted (el) {
+        el.focus()
+      }
+    }
+  },
+
+  mounted () {
+    this.randomPerson()
+  }
 })
 </script>
 
