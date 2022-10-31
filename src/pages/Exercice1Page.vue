@@ -9,7 +9,7 @@
     <div class="form q-mb-lg">
       <div class="row q-mb-md">
         <label>Nom:</label>
-        <input v-model="nom"  v-autofocus :class="{error : (nom.length > 15 || nom.length < 1)}" type="text">
+        <input v-model="nom" ref="nom" :class="{error : (nom.length > 15 || nom.length < 1)}" type="text">
         <label v-show="nom.length > 15 || nom.length < 1" class="error" >Maximum 15 caractères
         </label>
       </div>
@@ -65,6 +65,10 @@ export default defineComponent({
     randomPerson () {
       this.nom = randomNames[Math.floor(Math.random() * randomNames.length)]
       this.age = Math.floor(Math.random() * 100)
+    },
+
+    autoFocus () {
+      this.$refs.nom.focus()
     }
   },
 
@@ -78,6 +82,7 @@ export default defineComponent({
 
   mounted () {
     this.randomPerson()
+    this.autoFocus()
   }
 })
 </script>
